@@ -38,27 +38,22 @@ def genereaza_srt_proiect(date_scene: list, fisier_iesire: str, cuvinte_per_chun
         cuvinte = text.split()
         nr_total_cuvinte = len(cuvinte)
 
-        # Gestionează cazul puțin probabil în care scena nu are text
         if nr_total_cuvinte == 0:
             timp_curent_secunde += durata_totala_scena
             continue
 
-        # Estimăm un timp egal de vorbire pentru fiecare cuvânt din scenă
         durata_per_cuvant = durata_totala_scena / nr_total_cuvinte
 
-        # Împărțim propozițiile în calupuri mai mici (chunks)
         for i in range(0, nr_total_cuvinte, cuvinte_per_chunk):
             chunk_cuvinte = cuvinte[i:i + cuvinte_per_chunk]
             text_chunk = " ".join(chunk_cuvinte)
 
-            # Calculăm cât durează vizual acest calup de cuvinte
             durata_chunk = len(chunk_cuvinte) * durata_per_cuvant
 
             timp_inceput = _secunde_in_subriptime(timp_curent_secunde)
             timp_curent_secunde += durata_chunk
             timp_sfarsit = _secunde_in_subriptime(timp_curent_secunde)
 
-            # Creăm elementul de subtitrare conform standardului SubRip
             item = SubRipItem(
                 index=index_subtitrare,
                 start=timp_inceput,
@@ -68,6 +63,5 @@ def genereaza_srt_proiect(date_scene: list, fisier_iesire: str, cuvinte_per_chun
             subs.append(item)
             index_subtitrare += 1
 
-    # Salvăm fișierul final folosind encoding UTF-8 pentru diacritice (ex: ă, ș, ț)
     subs.save(fisier_iesire, encoding='utf-8')
     return fisier_iesire

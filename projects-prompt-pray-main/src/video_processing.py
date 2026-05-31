@@ -13,15 +13,12 @@ def proceseaza_scena_individuala(scena, nume_proiect, foloseste_imagini=False):
     audio_path = f"data/outputs/audio/{nume_proiect}scena{scena.numar_scena}.mp3"
     srt_path = f"data/outputs/subtitles/{nume_proiect}scena{scena.numar_scena}.srt"
 
-    # Generare audio
     genereaza_audio_scena(scena.naratiune, audio_path)
 
-    # Extragere durată
     clip_audio_temp = AudioFileClip(audio_path)
     durata_audio = clip_audio_temp.duration
     clip_audio_temp.close()
 
-    # Generare subtitrări
     date_scena = [{'text': scena.naratiune, 'durata': durata_audio}]
     genereaza_srt_proiect(date_scena, srt_path, cuvinte_per_chunk=6)
 
@@ -32,7 +29,7 @@ def proceseaza_scena_individuala(scena, nume_proiect, foloseste_imagini=False):
             prompt_imagine=getattr(scena, "prompt_imagine", ""),
             fisier_iesire=imagine_path
         )
-    # Generare video
+
     clip = creeaza_clip_scena(
         audio_path=audio_path,
         srt_path=srt_path,

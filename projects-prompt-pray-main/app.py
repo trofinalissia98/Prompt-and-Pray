@@ -7,15 +7,13 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from moviepy.editor import concatenate_videoclips
 
-# Setari pagina Streamlit
+
 st.set_page_config(
     page_title="AI Video Explainer",
     page_icon="🎬",
     layout="centered"
 )
 
-# CONECTARE LA MODULELE INTERNE
-# Asigurăm calea corectă către folderul src pentru importuri
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "src")))
 
 try:
@@ -28,7 +26,7 @@ except ImportError as e:
     )
     st.stop()
 
-# INIȚIALIZARE MEDIU ȘI LLM
+
 load_dotenv()
 
 llm = ChatGoogleGenerativeAI(
@@ -37,13 +35,11 @@ llm = ChatGoogleGenerativeAI(
     max_retries=2
 )
 
-# Creăm folderele de output, în caz că nu există
 os.makedirs("data/outputs/audio", exist_ok=True)
 os.makedirs("data/outputs/subtitles", exist_ok=True)
 os.makedirs("data/outputs/video", exist_ok=True)
 os.makedirs("data/outputs/images", exist_ok=True)
 
-# INTERFAȚA UTILIZATOR
 st.title("AI Text-to-Video Explainer")
 st.markdown(
     "Transformă documentația de produs sau lecțiile educaționale în videoclipuri "
@@ -84,14 +80,12 @@ def extrage_lista_scene(script: ScriptVideo):
     )
 
 
-# BUTON DE GENERARE
 if st.button("🚀 Generează Videoclipul", type="primary"):
     if not text_brut.strip():
         st.warning("Te rog să introduci un text înainte de a continua.")
     else:
         with st.status("Agentul AI procesează cererea...", expanded=True) as status:
             try:
-                # Curățăm numele proiectului pentru fișiere
                 nume_proiect_curat = nume_proiect.strip().replace(" ", "_")
 
                 if not nume_proiect_curat:
@@ -147,7 +141,7 @@ Textul utilizatorului:
                 rezultate_nesortate = []
                 progress_bar = st.progress(0)
 
-                # Dacă folosim imagini Azure, limităm paralelizarea ca să evităm rate-limit-uri
+
                 max_workers = min(2, nr_scene) if foloseste_imagini else nr_scene
 
                 with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -201,7 +195,7 @@ Textul utilizatorului:
                     logger=None
                 )
 
-                # Eliberare resurse MoviePy
+
                 video_final.close()
                 for clip in clipuri_scene:
                     clip.close()

@@ -23,7 +23,6 @@ def genereaza_imagine_scena_azure(prompt_imagine: str, fisier_iesire: str) -> Op
     if not prompt_imagine or not prompt_imagine.strip():
         return None
 
-    # Cache local
     if os.path.exists(fisier_iesire):
         return fisier_iesire
 

@@ -6,7 +6,6 @@ from moviepy.editor import ImageClip, AudioFileClip, CompositeVideoClip
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 
-# --- 1. GENERARE CADRE (PILLOW) ---
 def _creeaza_cadru_fundal(
     latime: int,
     inaltime: int,
@@ -20,7 +19,6 @@ def _creeaza_cadru_fundal(
     Altfel, folosește fundalul clasic cu emoji.
     """
 
-    # Varianta nouă: imagine generată
     if imagine_path and os.path.exists(imagine_path):
         img = Image.open(imagine_path).convert("RGB")
 
@@ -36,13 +34,11 @@ def _creeaza_cadru_fundal(
             centering=(0.5, 0.5)
         )
 
-        # overlay discret pentru lizibilitate
         overlay = Image.new("RGB", (latime, inaltime), (0, 0, 0))
         img = Image.blend(img, overlay, alpha=0.22)
 
         return np.array(img)
 
-    # Varianta veche: fundal + emoji
     culoare_rgb = tuple(culoare_fundal)
 
     img = Image.new("RGB", (latime, inaltime), color=culoare_rgb)
@@ -119,7 +115,6 @@ def _creeaza_cadru_subtitrare(text: str, latime: int, inaltime: int) -> np.ndarr
     return np.array(img)
 
 
-# --- 2. ORCHESTRAREA CLIPULUI SCENEI ---
 
 def creeaza_clip_scena(
     audio_path,
