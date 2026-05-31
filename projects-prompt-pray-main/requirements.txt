@@ -1,0 +1,17 @@
+langchain>=0.1.0
+langchain-google-genai
+python-dotenv
+moviepy==1.0.3
+edge-tts
+pysrt
+pandas
+rouge-score
+jupyterlab
+nest_asyncio
+rouge_score
+requests
+urllib3
+charset-normalizer
+chardet
+streamlit
+openai
